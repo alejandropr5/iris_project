@@ -21,6 +21,24 @@ fastapi-utils = "^0.2.1"
 jupyterlab = "^4.0.5"
 black = "^23.7.0"
 
+[tool.poetry.group.tf_mac]
+optional = true
+
+[tool.poetry.group.tf_mac.dependencies]
+tensorflow-macos = "^2.13.0"
+tensorflow-metal = "^1.0.1"
+
+[tool.poetry.group.tf_win]
+optional = true
+
+[tool.poetry.group.tf_win.dependencies]
+
+[tool.poetry.group.tf_linux]
+optional = true
+
+[tool.poetry.group.tf_linux.dependencies]
+tensorflow = "^2.13.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

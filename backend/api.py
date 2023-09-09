@@ -1,6 +1,4 @@
-from fastapi import FastAPI, Request
-from pydantic import BaseModel
-import typing
+from fastapi import FastAPI
 import numpy as np
 from model_loader import ModelLoader, Framework
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,9 +9,9 @@ app = FastAPI()
 data = np.random.rand(200, 200)
 
 models_path = {
-    'tensorflow': 'models/tf/iris_model',
-    'sklearn': 'models/sklearn/iris_model.pk'
-}   
+    "tensorflow": "models/tf/iris_model",
+    "sklearn": "models/sklearn/iris_model.pk",
+}
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,6 +21,7 @@ app.add_middleware(
     allow_credentials=True,
 )
 
+
 @app.on_event("startup")
 def load_model():
     """This function will run once
@@ -31,30 +30,29 @@ def load_model():
     framework = Framework.sklearn
     model = ModelLoader(
         path=models_path[framework.value],
-        framework= framework,
-        labels=['setosa', 'versicolor', 'virginica'],
-        name='iris_model',
-        version=1.0
+        framework=framework,
+        labels=["setosa", "versicolor", "virginica"],
+        name="iris_model",
+        version=1.0,
     )
     print("model loaded successfully!")
     app.state.model = model
+
 
 @app.on_event("shutdown")
 def shutdown_event():
     print("Shutting down the application...")
 
-app.include_router(users_router, 
-                    tags=["users"],
-                    prefix="/users")
 
-app.include_router(iris_router, 
-                    tags=["iris"],
-                    prefix="/iris")
+app.include_router(users_router, tags=["users"], prefix="/users")
+
+app.include_router(iris_router, tags=["iris"], prefix="/iris")
 
 
 @app.get("/hi")
 def hi():
     return {"message": "Hello World from the API"}
+
 
 # @app.get("/")
 # def home():
@@ -79,9 +77,9 @@ def hi():
 #     petal_length = float(request.query_params['petal_length'])
 #     petal_width = float(request.query_params['petal_width'])
 
-#     features = np.array([[sepal_length, 
-#                           sepal_width, 
-#                           petal_length, 
+#     features = np.array([[sepal_length,
+#                           sepal_width,
+#                           petal_length,
 #                           petal_width]])
 
 #     model = app.state.model
@@ -91,11 +89,11 @@ def hi():
 
 # @app.post("/predict")
 # async def predict(request: Request):
-#     def dict_to_array(dict_data):     
+#     def dict_to_array(dict_data):
 #         return np.array([
-#             dict_data['sepal_length'], 
-#             dict_data['sepal_width'], 
-#             dict_data['petal_length'], 
+#             dict_data['sepal_length'],
+#             dict_data['sepal_width'],
+#             dict_data['petal_length'],
 #             dict_data['petal_width']]
 #         )
 #     request_data_list = await request.json()
